@@ -2,26 +2,33 @@
 
 import React from 'react'
 import { StyleSheet,View, Text,Image } from 'react-native'
+import { getImageFromApi }  from '../API/TMDBApi'
 
 class FilmItem extends React.Component {
+
   render() {
+    // le constructeur d'un component a, par défaut, un paramètre  props
+    // Dès que vous passez des paramètres à vos components custom, React les récupére, les place dans un objet  props
+    const film = this.props.film
+
     return (
       <View style={styles.main_container}>
         <Image
           style={styles.image}
-          source={{uri: "image"}}
+          source={{uri: getImageFromApi(film.poster_path)}}
         />
         <View style={styles.content_container}>
           <View style={styles.header_container}>
-            <Text style={styles.title_text}>Titre du film</Text>
-            <Text style={styles.vote_text}>Vote</Text>
+            <Text style={styles.title_text}>{film.original_title}</Text>
+            <Text style={styles.vote_text}>{film.vote_average}</Text>
           </View>
           <View style={styles.description_container}>
-            <Text style={styles.description_text} numberOfLines={6}>Description</Text>
+            {/* la propriété  numberOfLines={6}  sur un Text qui, vous l'aurez compris, définit un nombre maximum de ligne pour un texte. Si le texte fait plus de 6 lignes, votre texte est coupé et l'application affiche "..." à la fin du texte; */}
+            <Text style={styles.description_text} numberOfLines={6}>{film.overview}</Text>
             {/* La propriété numberOfLines permet de couper un texte si celui-ci est trop long, il suffit de définir un nombre maximum de ligne */}
           </View>
           <View style={styles.date_container}>
-            <Text style={styles.date_text}>Sorti le 00/00/0000</Text>
+            <Text style={styles.date_text}>Sorti le {film.release_date}</Text>
           </View>
         </View>
 
@@ -54,6 +61,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     flex: 1,
     flexWrap: 'wrap',
+    // le style  flexWrap: 'wrap'  sur le titre du film qui permet à notre texte de passer à la ligne si celui-ci est trop long
     paddingRight: 5
   },
   vote_text: {
