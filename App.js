@@ -1,11 +1,12 @@
 import React from 'react';
-import Search from './Component/Search'
+import Navigation from './Navigation/Navigation'
+
 
 // On exporte toujours par défaut les components
 export default class App extends React.Component {
   render() {
     return (
-      <Search/>
+      <Navigation/>
     )
   }
 }

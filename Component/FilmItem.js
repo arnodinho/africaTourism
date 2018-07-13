@@ -1,7 +1,7 @@
 // Components/FilmItem.js
 
 import React from 'react'
-import { StyleSheet,View, Text,Image } from 'react-native'
+import { StyleSheet,View, Text,Image,TouchableOpacity } from 'react-native'
 import { getImageFromApi }  from '../API/TMDBApi'
 
 class FilmItem extends React.Component {
@@ -9,14 +9,17 @@ class FilmItem extends React.Component {
   render() {
     // le constructeur d'un component a, par défaut, un paramètre  props
     // Dès que vous passez des paramètres à vos components custom, React les récupére, les place dans un objet  props
-    const film = this.props.film
+  //  const film = this.props.film
+    const { film, displayDetailForFilm } = this.props
 
     return (
-      <View style={styles.main_container}>
+      // Un TouchableOpacity n'est en soit qu'une "enveloppe" permettant à vos vues d'être cliquables
+      <TouchableOpacity style={styles.main_container} onPress={() => displayDetailForFilm(film.id)}>
         <Image
           style={styles.image}
           source={{uri: getImageFromApi(film.poster_path)}}
         />
+        {/*  il n'y a aucun moyen de récupérer un évènement sur un component View. */}
         <View style={styles.content_container}>
           <View style={styles.header_container}>
             <Text style={styles.title_text}>{film.original_title}</Text>
@@ -32,7 +35,7 @@ class FilmItem extends React.Component {
           </View>
         </View>
 
-    </View>
+    </TouchableOpacity>
     )
   }
 }

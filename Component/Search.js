@@ -65,12 +65,19 @@ class Search extends React.Component {
          this.totalPages = 0
          // setState  est une fonction asynchrone. setState  possède un paramètre  callback  qui permet d'exécuter une action dès que notre state a fini de se mettre à jour.
          this.setState({ films: []}, () => {
-           console.log("Page : " + this.page + " / TotalPages : " + this.totalPages + " / Nombre de films : " + this.state.films.length)
            this._loadFilms()
          })
 
          // this._loadFilms()
      }
+
+     // ça équivaut à : _displayDetailForFilm(idFilm) { }
+     _displayDetailForFilm = (idFilm) => {
+       console.log("Display film with id " + idFilm)
+       this.props.navigation.navigate("FilmDetail", { idFilm: idFilm })
+     }
+
+
   // render() {...}  équivaut à  render = function() {...}
   //React préconise fortement de n'utiliser que les données provenant des props et du state dans le  render de vos component
   render() {
@@ -86,7 +93,7 @@ class Search extends React.Component {
             <FlatList
                 data={this.state.films}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({item}) => <FilmItem film={item}/>}
+                renderItem={({item}) => <FilmItem film={item} displayDetailForFilm={this._displayDetailForFilm}/>}
                 // pour que l'évènement  onReachEnd  se déclenche quand il ne reste plus qu'une moitié (0.5) de longueur de notre FlatList à afficher.
                 onEndReachedThreshold={0.5}
                 onEndReached={() => {
@@ -107,7 +114,6 @@ const styles = StyleSheet.create({
 
     main_container: {
       flex: 1,
-      marginTop: 60,
     },
     textinput: {
       marginLeft: 5,
