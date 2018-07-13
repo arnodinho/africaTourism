@@ -5,8 +5,8 @@ export function getImageFromApi (name) {
 }
 
 // React Native vous propose d'utiliser l'API Fetch dans sa documentation pour tous vos appels réseaux
-export function getFilmsFromApiWithSearchedText (text) {
-  const url = 'https://api.themoviedb.org/3/search/movie?api_key=' + API_TOKEN + '&language=fr&query=' + text
+export function getFilmsFromApiWithSearchedText (text, page) {
+  const url = 'https://api.themoviedb.org/3/search/movie?api_key=' + API_TOKEN + '&language=fr&query=' + text+ "&page=" + page
 
 //
   return fetch(url)

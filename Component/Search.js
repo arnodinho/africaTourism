@@ -13,8 +13,11 @@ class Search extends React.Component {
     super(props)
     // Ici on va créer les propriétés de notre component custom Search
     //this._films = []
-    this.searchedText = "" // Initialisation de notre donnée searchedText en dehors du state
     // Dès lors que vous souhaitez modifier votre component et ses données affichées, vous allez utiliser son state.
+    this.searchedText = ""
+    this.page = 0 // Compteur pour connaître la page courante
+    this.totalPages = 0 // Nombre de pages totales pour savoir si on a atteint la fin des retours de l'API TMDB
+     // Dès lors que vous souhaitez modifier votre component et ses données affichées, vous allez utiliser son state.
     this.state = {
       films: [],
       isLoading: false // Par défaut à false car il n'y a pas de chargement tant qu'on ne lance pas de recherche
@@ -27,10 +30,12 @@ class Search extends React.Component {
     _loadFilms() {
       if (this.searchedText.length > 0) { // Seulement si le texte recherché n'est pas vide
         this.setState({ isLoading: true }) // Lancement du chargement
-        getFilmsFromApiWithSearchedText(this.searchedText).then(data => {
+        getFilmsFromApiWithSearchedText(this.searchedText,this.page+1).then(data => {
+        this.page = data.page
+        this.totalPages = data.total_pages
           // setState  récupère les modifications de vos données et indique à React que le component a besoin d'être re-rendu avec ces  nouvelles données.
         this.setState({
-                        films: data.results,
+                        films:  [ ...this.state.films, ...data.results ], //ajouter les films à ceux qu'on a déjà récupéré. equivalent a this.state.films.concat(data.results)
                         isLoading: false
                       })
 
@@ -54,26 +59,40 @@ class Search extends React.Component {
        }
      }
 
+     _searchFilms() {
+         // Ici on va remettre à zéro les films de notre state et toutes les variables d'appel a l'api
+         this.page = 0
+         this.totalPages = 0
+         // setState  est une fonction asynchrone. setState  possède un paramètre  callback  qui permet d'exécuter une action dès que notre state a fini de se mettre à jour.
+         this.setState({ films: []}, () => {
+           console.log("Page : " + this.page + " / TotalPages : " + this.totalPages + " / Nombre de films : " + this.state.films.length)
+           this._loadFilms()
+         })
 
+         // this._loadFilms()
+     }
   // render() {...}  équivaut à  render = function() {...}
   //React préconise fortement de n'utiliser que les données provenant des props et du state dans le  render de vos component
   render() {
       return (
           // Ici on rend à l'écran les éléments graphiques de notre component custom Search
+          // onSubmitEditing validation de la recherche avec le clavier
           <View style={styles.main_container}>
-            <TextInput style={styles.textinput}  onSubmitEditing={() => this._loadFilms()} placeholder='Titre du film'  onChangeText={(text) => this._searchTextInputChanged(text)}/>
+            <TextInput style={styles.textinput}  onSubmitEditing={() => this._searchFilms()} placeholder='Titre du film'  onChangeText={(text) => this._searchTextInputChanged(text)}/>
             {/* onPress={() => {}} equivaut a onPress={function() {}} */}
-            <Button style={styles.buttoninput}  title='Rechercher' onPress={() => {this._loadFilms()}}/>
+            <Button style={styles.buttoninput}  title='Rechercher' onPress={() => {this._searchFilms()}}/>
             {/* syntaxe ES6 renderItem={function ({item}) { return <Text>{item.title}</Text> }} */}
             {/* keyExtractor tells the list to use the ids for the react keys instead of the default key property.  */}
             <FlatList
                 data={this.state.films}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({item}) => <FilmItem film={item}/>}
+                // pour que l'évènement  onReachEnd  se déclenche quand il ne reste plus qu'une moitié (0.5) de longueur de notre FlatList à afficher.
                 onEndReachedThreshold={0.5}
                 onEndReached={() => {
-                  if (this.state.films.length > 0) {
-                     console.log("onEndReached")
+                  if (this.state.films.length > 0 && this.page < this.totalPages) {
+                    // On vérifie également qu'on n'a pas atteint la fin de la pagination (totalPages) avant de charger plus d'éléments
+                    this._loadFilms()
                   }
                 }}
               />
