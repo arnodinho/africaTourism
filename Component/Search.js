@@ -5,7 +5,8 @@ import { StyleSheet,View, TextInput,Text, Button,FlatList,ActivityIndicator } fr
 import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi' // import { } from ... car c'est un export nommé dans TMDBApi.js
 // import films from '../Helpers/filmsData'
 import FilmItem from './FilmItem'
-import { connect } from 'react-redux'
+import FilmList from './FilmList'
+
 
 class Search extends React.Component {
   //En React, on a pour habitude de définir nos propriétés dans le constructeur du component
@@ -95,27 +96,15 @@ class Search extends React.Component {
             <Button style={styles.buttoninput}  title='Rechercher' onPress={() => {this._searchFilms()}}/>
             {/* syntaxe ES6 renderItem={function ({item}) { return <Text>{item.title}</Text> }} */}
             {/* keyExtractor tells the list to use the ids for the react keys instead of the default key property.  */}
-            <FlatList
-                data={this.state.films}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({item}) =>
-                          <FilmItem
-                              film={item}
-                              // Ajout d'une props isFilmFavorite pour indiquer à l'item d'afficher un 🖤 ou non
-                              isFilmFavorite={(this.props.favoritesFilm.findIndex(film => film.id === item.id) !== -1) ? true : false}
-
-                              displayDetailForFilm={this._displayDetailForFilm}/>}
-                // pour que l'évènement  onReachEnd  se déclenche quand il ne reste plus qu'une moitié (0.5) de longueur de notre FlatList à afficher.
-                onEndReachedThreshold={0.5}
-                onEndReached={() => {
-                  if (this.state.films.length > 0 && this.page < this.totalPages) {
-                    // On vérifie également qu'on n'a pas atteint la fin de la pagination (totalPages) avant de charger plus d'éléments
-                    this._loadFilms()
-                  }
-                }}
-              />
+            <FilmList
+                    films={this.state.films} // C'est bien le component Search qui récupère les films depuis l'API et on les transmet ici pour que le component FilmList les affiche
+                    navigation={this.props.navigation} // Ici on transmet les informations de navigation pour permettre au component FilmList de naviguer vers le détail d'un film
+                    loadFilms={this._loadFilms} // _loadFilm charge les films suivants, ça concerne l'API, le component FilmList va juste appeler cette méthode quand l'utilisateur aura parcouru tous les films et c'est le component Search qui lui fournira les films suivants
+                    page={this.page}
+                    totalPages={this.totalPages} // les infos page et totalPages vont être utile, côté component FilmList, pour ne pas déclencher l'évènement pour charger plus de film si on a atteint la dernière page
+                  />
                 {/* Lorsque vous définissez une key, React peut rapidement identifier de manière unique un item et faire l'action adéquate : ajout, suppression voir modification */}
-                {this._displayLoading()}
+            {this._displayLoading()}
           </View>
       )
     }
@@ -148,13 +137,8 @@ const styles = StyleSheet.create({
       justifyContent: 'center'
     }
 })
-// On connecte le store Redux, ainsi que les films favoris du state de notre application, à notre component Search
-const mapStateToProps = state => {
-  return {
-    favoritesFilm: state.favoritesFilm
-  }
-}
+
 // On exporte toujours par défaut les components
 //  un component = un fichier = un export par défaut.
 
-export default connect(mapStateToProps)(Search)
+export default Search
