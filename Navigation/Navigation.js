@@ -21,6 +21,19 @@ const SearchStackNavigator = createStackNavigator({
   }
 })
 
+const FavoritesStackNavigator = createStackNavigator({
+  Favorites: {
+    screen: Favorites,
+    navigationOptions: {
+      title: 'Favoris'
+    }
+  },
+  FilmDetail: {
+    screen: FilmDetail
+  }
+})
+
+
 const MoviesTabNavigator = createBottomTabNavigator(
   {
       Search: {
@@ -34,14 +47,13 @@ const MoviesTabNavigator = createBottomTabNavigator(
         }
       },
       Favorites: {
-        screen: Favorites,
+        screen: FavoritesStackNavigator,
         navigationOptions: {
           tabBarIcon: () => {
             return <Image
               source={require('../Images/ic_favorite.png')}
               style={styles.icon}/>
-          },
-          title: 'Mes favoris'
+          }
             }
       }
   },
@@ -52,7 +64,7 @@ const MoviesTabNavigator = createBottomTabNavigator(
     showLabel: false, // On masque les titres
     showIcon: true // On informe le TabNavigator qu'on souhaite afficher les icônes définis
   }
-}    
+}
 )
 
 

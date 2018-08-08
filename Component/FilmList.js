@@ -14,6 +14,7 @@ class FilmList extends React.Component {
     }
   }
 
+//Quand vous créez une fonction fléchée, celle-ci est automatiquement bindée avec le contexte qui l'englobe : _displayDetailForFilm = (idFilm) => {}
   _displayDetailForFilm = (idFilm) => {
     console.log("Display film " + idFilm)
     // On a récupéré les informations de la navigation, on peut afficher le détail du film
@@ -30,12 +31,13 @@ class FilmList extends React.Component {
             <FilmItem
               film={item}
               isFilmFavorite={(this.props.favoritesFilm.findIndex(film => film.id === item.id) !== -1) ? true : false}
+              // Bonus pour différencier les films déjà présent dans notre state global et qui n'ont donc pas besoin d'être récupérés depuis l'API
               displayDetailForFilm={this._displayDetailForFilm}
             />
           )}
           onEndReachedThreshold={0.5}
           onEndReached={() => {
-            if (this.props.films.length > 0 && this.props.page < this.props.totalPages) {
+            if (!this.props.favoriteList && this.props.films.length > 0 && this.props.page < this.props.totalPages) {
               // On appelle la méthode loadfilm du component Search pour charger plus de film
               this.props.loadFilms()
             }

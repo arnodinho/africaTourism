@@ -25,6 +25,7 @@ class Search extends React.Component {
       isLoading: false // Par défaut à false car il n'y a pas de chargement tant qu'on ne lance pas de recherche
      }
 
+     this._loadFilms = this._loadFilms.bind(this)
   }
 
 
@@ -73,12 +74,12 @@ class Search extends React.Component {
          // this._loadFilms()
      }
 
-     // ça équivaut à : _displayDetailForFilm(idFilm) { }
-     _displayDetailForFilm = (idFilm) => {
-       console.log("Display film with id " + idFilm)
-       this.props.navigation.navigate("FilmDetail", { idFilm: idFilm })
-     }
-
+     // // ça équivaut à : _displayDetailForFilm(idFilm) { }
+     // _displayDetailForFilm = (idFilm) => {
+     //   console.log("Display film with id " + idFilm)
+     //   this.props.navigation.navigate("FilmDetail", { idFilm: idFilm })
+     // }
+     //
 
   // render() {...}  équivaut à  render = function() {...}
   //React préconise fortement de n'utiliser que les données provenant des props et du state dans le  render de vos component
