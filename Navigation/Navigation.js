@@ -1,8 +1,12 @@
 // En React Native, on a pour habitude d'isoler toute la gestion de la navigation dans un fichier à part.
 //  toute votre navigation est gérée par cette barre de navigation. Vos vues vont se placer au dessous à chaque fois.
-import { createStackNavigator } from 'react-navigation'
+import React from 'react'
+import { StyleSheet, Image } from 'react-native';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
+
 import Search from '../Component/Search'
 import FilmDetail from '../Component/FilmDetail'
+import Favorites from '../Component/Favorites'
 
 //initialise un StackNavigator avec toutes les vues qu'il va contenir
 const SearchStackNavigator = createStackNavigator({
@@ -17,4 +21,48 @@ const SearchStackNavigator = createStackNavigator({
   }
 })
 
-export default SearchStackNavigator
+const MoviesTabNavigator = createBottomTabNavigator(
+  {
+      Search: {
+        screen: SearchStackNavigator,
+        navigationOptions: {
+          tabBarIcon: () => { // On définit le rendu de nos icônes par les images récemment ajoutés au projet
+              return <Image
+                      source={require('../Images/ic_search.png')}
+                      style={styles.icon}/> // On applique un style pour les redimensionner comme il faut
+          }
+        }
+      },
+      Favorites: {
+        screen: Favorites,
+        navigationOptions: {
+          tabBarIcon: () => {
+            return <Image
+              source={require('../Images/ic_favorite.png')}
+              style={styles.icon}/>
+          },
+          title: 'Mes favoris'
+            }
+      }
+  },
+  {
+  tabBarOptions: {
+    activeBackgroundColor: '#DDDDDD', // Couleur d'arrière-plan de l'onglet sélectionné
+    inactiveBackgroundColor: '#FFFFFF', // Couleur d'arrière-plan des onglets non sélectionnés
+    showLabel: false, // On masque les titres
+    showIcon: true // On informe le TabNavigator qu'on souhaite afficher les icônes définis
+  }
+}    
+)
+
+
+
+const styles = StyleSheet.create({
+  icon: {
+    width: 30,
+    height: 30
+  }
+})
+
+
+export default MoviesTabNavigator
