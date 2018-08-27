@@ -40,33 +40,33 @@ class Home extends React.Component {
       <View style={styles.main_container}>
 
       <View style={styles.container_1}>
-          <TouchableOpacity  style={{backgroundColor: '#F7DC6F'}} style={styles.item_wrapper}>
+          <TouchableOpacity  style={[styles.item_wrapper, styles.color_1]}>
               {this._displayImage('health')}
-              <Text style={styles.item_text}> Restaurants</Text>
+              <Text style={styles.item_text}> Santé</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flex: 1, backgroundColor: '#00ff7f',marginLeft: 2,marginRight: 2,marginTop:2,marginBottom:2  }}>
+          <TouchableOpacity style={[styles.item_wrapper, styles.color_2]}>
               {this._displayImage('calendar')}
-                <Text style={styles.item_text}> Sortir</Text>
+                <Text style={styles.item_text}> Manifestations  Evenements</Text>
           </TouchableOpacity>
       </View>
           <View style={styles.container_2}>
-              <TouchableOpacity style={{ flex: 1, backgroundColor: '#20b2aa',  marginLeft: 2,marginRight: 2,marginTop:2,marginBottom:2 }}>
+              <TouchableOpacity style={[styles.item_wrapper, styles.color_3]}>
               {this._displayImage('beer')}
-                  <Text style={styles.item_text}> Sports - Loisirs</Text>
+                  <Text style={styles.item_text}> Sortir </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{ flex: 1, backgroundColor: '#D6DBDF',marginLeft: 2,marginRight: 2,marginTop:2,marginBottom:2  }}>
+              <TouchableOpacity style={[styles.item_wrapper, styles.color_4]}>
               {this._displayImage('shopping')}
                   <Text style={styles.item_text}> Shopping</Text>
               </TouchableOpacity>
           </View>
           <View style={styles.container_3}>
-              <TouchableOpacity style={{ flex: 1, backgroundColor: '#99ccff',  marginLeft: 2,marginRight: 2,marginTop:2,marginBottom:2 }}>
+              <TouchableOpacity style={[styles.item_wrapper, styles.color_5]}>
               {this._displayImage('hotel')}
-                  <Text style={styles.item_text} > Manifestations - Evenements</Text>
+                  <Text style={styles.item_text} >Hébergements </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{ flex: 1, backgroundColor: '#ff4040',marginLeft: 2,marginRight: 2,marginTop:2,marginBottom:2  }}>
+              <TouchableOpacity style={[styles.item_wrapper, styles.color_6]}>
               {this._displayImage('restaurant')}
-                  <Text style={styles.item_text}> Santé</Text>
+                  <Text style={styles.item_text}> Restaurants</Text>
               </TouchableOpacity>
           </View>
       </View>
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   item_wrapper: {
      flex: 1,
-     backgroundColor: '#F7DC6F',
+     // backgroundColor: '#F7DC6F',
      marginLeft: 2,
      marginRight: 2,
      marginTop:2,
@@ -105,13 +105,37 @@ const styles = StyleSheet.create({
   },
     item_image: {
       alignItems: 'center',
-      marginTop: 45,
+      marginTop: 40,
       marginLeft:55,
       height: 64,
       width: 64,
     },
+    color_1: {
+      backgroundColor:'#F7DC6F'
+    },
+
+    color_2: {
+      backgroundColor:'#00ff7f'
+    },
+
+    color_3: {
+      backgroundColor:'#20b2aa'
+    },
+
+    color_4: {
+      backgroundColor:'#D6DBDF'
+    },
+
+    color_5: {
+      backgroundColor:'#99ccff'
+    },
+
+    color_6: {
+      backgroundColor:'#ff4040'
+    },
     item_text: {
-      alignItems: 'center',
+      marginTop:4,
+      textAlign: 'center',
       justifyContent: 'center',
     }
 })
