@@ -40,10 +40,12 @@ class Home extends React.Component {
       <View style={styles.main_container}>
 
       <View style={styles.container_1}>
+
           <TouchableOpacity  style={[styles.item_wrapper, styles.color_1]}>
-              {this._displayImage('health')}
-              <Text style={styles.item_text}> Santé</Text>
+            {this._displayImage('health')}
+              <Text style={styles.item_text}> Santé </Text>
           </TouchableOpacity>
+
           <TouchableOpacity style={[styles.item_wrapper, styles.color_2]}>
               {this._displayImage('calendar')}
                 <Text style={styles.item_text}> Manifestations  Evenements</Text>
@@ -101,7 +103,6 @@ const styles = StyleSheet.create({
      marginRight: 2,
      marginTop:2,
      marginBottom:2,
-     borderRadius: 10,
   },
     item_image: {
       alignItems: 'center',
